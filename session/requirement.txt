@@ -1,0 +1,6 @@
+nameko
+redis
+werkzeug
+pickle
+uuid
+mysql
