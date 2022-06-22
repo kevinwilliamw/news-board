@@ -59,7 +59,7 @@ class DatabaseWrapper:
         cursor.close()
         return result
     
-    def add_news (self, title, content, image):
+    def add_news(self, title, content, image):
         cursor = self.connection.cursor(dictionary=True)
         result = []
         cursor.execute("""
@@ -85,17 +85,18 @@ class DatabaseWrapper:
             """, (generateUUID, title, content, image))
             cursor.close()
             self.connection.commit()
-            return "News successfully added!"
+            return "News successfully added! File ID = " + generateUUID
             
-    def edit_news (self, title, content, image):
+    def edit_news(self, uuid, title, content, image):
         cursor = self.connection.cursor(dictionary=True)
         result = []
         cursor.execute("""
         SELECT * FROM news
-        WHERE title = %s;               
-        """, (title,))
+        WHERE id = %s;               
+        """, (uuid,))
         for row in cursor.fetchall():
             result.append({
+                'id': row['id'],
                 'title' : row['title'],
                 'content' : row['content'],
                 'image' : row['image']
@@ -103,9 +104,9 @@ class DatabaseWrapper:
         if result:
             cursor.execute("""
             UPDATE news 
-            SET content=%s, image= %s 
-            WHERE title= %s
-            """, (content, image, title))
+            SET title =%s, content=%s, image= %s 
+            WHERE id = %s
+            """, (title, content, image, uuid))
             cursor.close()
             self.connection.commit()
             return "News successfully updated."
@@ -121,9 +122,10 @@ class DatabaseWrapper:
         """)
         for row in cursor.fetchall():
             result.append({
+                'id' : row['id'],
                 'title' : row['title'],
                 'content' : row['content'],
-                'image' : row['image']
+                'image' : row['image'],
             })
         cursor.close() 
         if result:    
@@ -131,7 +133,7 @@ class DatabaseWrapper:
         else:
             return "There are no news."
         
-    def get_news_by_id(self, uuid):
+    def get_news(self, uuid):
         cursor = self.connection.cursor(dictionary=True)
         result = []
         cursor.execute("""
@@ -175,7 +177,7 @@ class DatabaseWrapper:
             cursor.close()
             return "No news matches this ID."
         
-    def download_file_by_id (self, uuid):
+    def download_news(self, uuid):
         cursor = self.connection.cursor(dictionary=True)
         result = []
         cursor.execute("""

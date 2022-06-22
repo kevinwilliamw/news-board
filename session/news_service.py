@@ -24,8 +24,8 @@ class NewsService:
         return user
     
     @rpc
-    def edit_news(self, title, content, image):
-        user = self.database.edit_news(title, content, image)
+    def edit_news(self, uuid, title, content, image):
+        user = self.database.edit_news(uuid, title, content, image)
         return user
     
     @rpc
@@ -34,8 +34,8 @@ class NewsService:
         return user
     
     @rpc
-    def get_news_by_id(self, uuid):
-        user = self.database.get_news_by_id(uuid)
+    def get_news(self, uuid):
+        user = self.database.get_news(uuid)
         return user
     
     @rpc
@@ -44,6 +44,6 @@ class NewsService:
         return user
     
     @rpc
-    def download_file_by_id(self, uuid):
-        user = self.database.download_file_by_id(uuid)
+    def download_news(self, uuid):
+        user = self.database.download_news(uuid)
         return user

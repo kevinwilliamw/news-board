@@ -61,7 +61,7 @@ class GatewayService:
         cookies = request.cookies
         if cookies:
             data = request.json
-            result = self.news_access_rpc.edit_news(data['title'], data['content'], data['image'])
+            result = self.news_access_rpc.edit_news(data['id'], data['title'], data['content'], data['image'])
             return result
         else:
             response = Response("Log in required to edit news! Please log in.")
@@ -74,9 +74,9 @@ class GatewayService:
         return json.dumps(result)
     
     @http('POST', '/getbyid')
-    def get_news_by_id(self, request):
+    def get_news(self, request):
         data = request.json
-        result = self.news_access_rpc.get_news_by_id(data['id'])
+        result = self.news_access_rpc.get_news(data['id'])
         return json.dumps(result)
     
     @http('POST', '/delete')
@@ -91,7 +91,7 @@ class GatewayService:
             return response
         
     @http('POST', '/download')
-    def download_file_by_id(self, request):
+    def download_news(self, request):
         data = request.json
-        result = self.news_access_rpc.download_file_by_id(data['id'])
+        result = self.news_access_rpc.download_newss(data['id'])
         return json.dumps(result)
